@@ -1,0 +1,36 @@
+# Unity generated folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# IDE generated files
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.slnx
+*.user
+*.pidb
+*.booproj
+*.svd
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Unity Asset Store packages
+# These packages are required locally but their source files cannot be redistributed
+# in a public repository under the Standard Unity Asset Store EULA.
+/Assets/Bandits - Pixel Art/
+/Assets/Bandits - Pixel Art.meta
+/Assets/Cainos/
+/Assets/Cainos.meta
+/Assets/Fantasy Wooden GUI  Free/
+/Assets/Fantasy Wooden GUI  Free.meta
+/Assets/Hero Knight - Pixel Art/
+/Assets/Hero Knight - Pixel Art.meta
