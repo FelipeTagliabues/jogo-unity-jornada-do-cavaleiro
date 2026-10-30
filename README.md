@@ -12,6 +12,7 @@ condições de vitória e derrota e menus de jogo.
 - Unity `6000.6.0f1` (`Unity 6.6`), revisão `f7f8ed4d1e24`.
 - Git para clonar o repositório.
 - Conta gratuita da Unity Asset Store para obter quatro pacotes gratuitos usados pelo projeto.
+- Acesso ao Pixabay e ao Mixkit para restaurar os cinco áudios gratuitos nos nomes documentados.
 
 As dependências do Unity Package Manager estão registradas em `Packages/manifest.json` e
 `Packages/packages-lock.json`.
@@ -32,6 +33,17 @@ pela Unity Asset Store/My Assets:
 Consulte [THIRD_PARTY_ASSETS.md](THIRD_PARTY_ASSETS.md) para os diretórios esperados, detalhes de
 licença e observações de reprodução.
 
+Os cinco arquivos de áudio também são mantidos fora do Git: as licenças permitem incorporá-los ao
+jogo, mas restringem a redistribuição dos arquivos-fonte/isolados. Baixe as faixas e efeitos pelos
+links registrados em `THIRD_PARTY_ASSETS.md`, coloque-os em `Assets/EfeitosSonoros/` com estes nomes
+exatos e preserve os arquivos `.meta` versionados:
+
+- `MusicaDeFundoMenu.mp3`
+- `MusicaDeFundoDoJogoRodando.mp3`
+- `AtaqueEspada.wav`
+- `escudo.mp3`
+- `SinoAoMorrer.mp3`
+
 ## Instalação e execução
 
 1. Clone o repositório.
@@ -39,8 +51,9 @@ licença e observações de reprodução.
 3. Adicione o diretório clonado como projeto.
 4. Importe os quatro pacotes da tabela acima, preservando os caminhos e arquivos `.meta` gerados
    pelos pacotes.
-5. Abra `Assets/Scenes/MainGame.unity`.
-6. Pressione **Play** e selecione **Iniciar**.
+5. Restaure os cinco áudios nos nomes e caminhos indicados acima, sem substituir os `.meta` do Git.
+6. Aguarde a importação e execute `Projeto Medieval > Validar jogo completo > MainGame`.
+7. Abra `Assets/Scenes/MainGame.unity`, pressione **Play** e selecione **Iniciar**.
 
 `MainGame` é a primeira cena habilitada em Build Settings. Se algum pacote tiver sido importado em
 um caminho diferente, restaure os diretórios indicados em `THIRD_PARTY_ASSETS.md` e execute
@@ -71,9 +84,9 @@ O menu `Projeto Medieval` oferece três rotinas principais:
 - `Testar MainGame em Play Mode`: executa o smoke test de introdução, gameplay, física, cura,
   defesa, pausa, derrota, reinício, combate, chefe e vitória.
 
-Na preparação desta versão, a compilação C# terminou sem erros, a validação estrutural foi aprovada
-e o smoke test completo em Play Mode foi aprovado. Os quatro avisos de compilação restantes vêm dos
-scripts originais dos pacotes Asset Store e não impedem a execução.
+Na preparação desta versão, a compilação C# terminou sem erros, a validação estrutural, o smoke test
+completo em Play Mode e um build Windows de desenvolvimento foram aprovados. O único aviso C#
+restante (`CS0105`) vem de um script original do pacote Cainos e não impede a execução.
 
 ## Estrutura relevante
 

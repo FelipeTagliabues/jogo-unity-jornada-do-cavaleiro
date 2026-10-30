@@ -1,10 +1,10 @@
 # Assets de terceiros
 
-Este projeto usa quatro pacotes gratuitos da Unity Asset Store. Todos estão identificados nas
-metainformações originais como sujeitos à **Standard Unity Asset Store EULA**. A licença permite
-usar e distribuir os assets incorporados em um jogo, mas não republicar os arquivos-fonte dos
-pacotes como uma coleção reutilizável. Por esse motivo, eles permanecem disponíveis apenas no
-ambiente local do autor e não fazem parte do histórico público deste repositório.
+Este projeto usa quatro pacotes gratuitos da Unity Asset Store e cinco arquivos de áudio gratuitos.
+As licenças permitem incorporar esse conteúdo ao jogo, mas restringem a redistribuição dos arquivos
+originais, isolados ou junto dos arquivos-fonte. Por esse motivo, os binários permanecem disponíveis
+apenas no ambiente local do autor e não fazem parte do histórico público deste repositório. Os
+scripts, cenas e arquivos `.meta` necessários para manter os GUIDs são versionados.
 
 Referência dos termos: <https://unity.com/legal/as-terms>
 
@@ -44,13 +44,34 @@ Referência dos termos: <https://unity.com/legal/as-terms>
 - Caminho esperado: `Assets/Fantasy Wooden GUI  Free/`
 - Uso: pergaminhos e botões da interface.
 
+## Áudios e caminhos esperados
+
+Os quatro itens do Pixabay estão sob a
+[Pixabay Content License](https://pixabay.com/service/license-summary/), que permite uso e adaptação
+em obras maiores, mas proíbe distribuir o conteúdo de forma isolada. O efeito do Mixkit está sob a
+[Mixkit Sound Effects Free License](https://mixkit.co/license/modal/sfxFree/), que permite uso em
+videogames, mas não redistribuição do item como arquivo-fonte. Atribuição não é obrigatória nessas
+licenças, mas as fontes são registradas abaixo para rastreabilidade.
+
+| Caminho local | Fonte | Uso no jogo |
+| --- | --- | --- |
+| `Assets/EfeitosSonoros/MusicaDeFundoMenu.mp3` | [Medieval Music — kiravale / Pixabay](https://pixabay.com/music/celtic-medieval-music-593694/) | Música do menu |
+| `Assets/EfeitosSonoros/MusicaDeFundoDoJogoRodando.mp3` | [Medieval Waltz Music — Tunetank / Pixabay](https://pixabay.com/music/adventure-medieval-waltz-music-412748/) | Música da partida |
+| `Assets/EfeitosSonoros/AtaqueEspada.wav` | [Metal Hit Woosh — Mixkit, item 1485](https://mixkit.co/free-sound-effects/sword/) | Ataque de espada |
+| `Assets/EfeitosSonoros/escudo.mp3` | [Shield Guard — nekoninja / Pixabay](https://pixabay.com/sound-effects/film-special-effects-shield-guard-6963/) | Defesa com escudo |
+| `Assets/EfeitosSonoros/SinoAoMorrer.mp3` | [Bell Toll — Stickypix7996 / Pixabay](https://pixabay.com/sound-effects/film-special-effects-bell-toll-407826/) | Derrota do jogador |
+
+Baixe cada arquivo pela página indicada e renomeie-o exatamente como na primeira coluna. Não apague
+nem regenere os `.meta` já versionados: eles preservam as referências serializadas da cena.
+
 ## Reprodução
 
 1. Obtenha os quatro pacotes na conta que abrirá o projeto.
 2. Importe-os pelo Package Manager (`My Assets`) nos caminhos originais.
-3. Aguarde a Unity concluir a importação e compilação.
-4. Abra `Assets/Scenes/MainGame.unity`.
-5. Execute `Projeto Medieval > Validar jogo completo > MainGame`.
+3. Baixe os cinco áudios nas páginas indicadas e coloque-os nos caminhos exatos da tabela.
+4. Preserve os `.meta` versionados dos áudios e aguarde a Unity concluir importação e compilação.
+5. Abra `Assets/Scenes/MainGame.unity`.
+6. Execute `Projeto Medieval > Validar jogo completo > MainGame`.
 
 Os GUIDs internos são fornecidos pelos próprios pacotes. Não recrie manualmente seus arquivos
 `.meta`. Caso uma versão futura altere nomes ou caminhos, use as versões indicadas acima ou ajuste

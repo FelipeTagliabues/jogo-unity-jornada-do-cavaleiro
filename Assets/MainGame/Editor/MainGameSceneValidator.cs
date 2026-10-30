@@ -119,6 +119,25 @@ namespace MedievalJourneyEditor
             if (manager != null)
             {
                 RequireComponent<GameManager>(manager, errors);
+                GameAudio audio = manager.GetComponent<GameAudio>();
+                RequireComponent<GameAudio>(manager, errors);
+                if (audio != null)
+                {
+                    if (audio.MusicSource == null || audio.EffectsSource == null)
+                    {
+                        errors.Add("o sistema de audio nao possui as duas fontes configuradas.");
+                    }
+                    else if (!audio.MusicSource.loop || audio.EffectsSource.loop)
+                    {
+                        errors.Add("o loop das fontes de musica e efeitos esta configurado incorretamente.");
+                    }
+
+                    if (audio.MenuMusic == null || audio.GameplayMusic == null ||
+                        audio.SwordAttack == null || audio.ShieldDefense == null || audio.DeathBell == null)
+                    {
+                        errors.Add("um ou mais dos cinco audios obrigatorios nao estao referenciados.");
+                    }
+                }
             }
 
             GameObject ui = FindInScene(scene, "Interface");
@@ -175,7 +194,7 @@ namespace MedievalJourneyEditor
         {
             if (errors.Count == 0)
             {
-                Debug.Log("MainGame validado: introducao narrativa, Tilemap Cainos, 7 areas, 16 inimigos, 8 itens de vida, chefe, UI, camera e build settings OK.");
+                Debug.Log("MainGame validado: introducao, cinco audios, Tilemap Cainos, 7 areas, 16 inimigos, 8 itens de vida, chefe, UI, camera e build settings OK.");
                 return;
             }
 

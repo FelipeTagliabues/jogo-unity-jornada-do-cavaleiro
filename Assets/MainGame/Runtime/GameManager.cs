@@ -20,6 +20,7 @@ namespace MedievalJourney
     {
         [SerializeField] private HealthSystem playerHealth;
         [SerializeField] private GameUI gameUI;
+        [SerializeField] private GameAudio gameAudio;
         [SerializeField, Min(0)] private int expectedEnemies = 5;
 
         private static bool startImmediatelyAfterReload;
@@ -61,6 +62,10 @@ namespace MedievalJourney
                 startImmediatelyAfterReload = false;
                 StartGameImmediately();
             }
+            else
+            {
+                gameAudio?.HandlePhase(Phase);
+            }
         }
 
         private void Update()
@@ -84,10 +89,11 @@ namespace MedievalJourney
             }
         }
 
-        public void Configure(HealthSystem player, GameUI ui, int enemyCount)
+        public void Configure(HealthSystem player, GameUI ui, GameAudio audio, int enemyCount)
         {
             playerHealth = player;
             gameUI = ui;
+            gameAudio = audio;
             expectedEnemies = Mathf.Max(0, enemyCount);
         }
 
@@ -213,6 +219,22 @@ namespace MedievalJourney
             }
         }
 
+        public void NotifySwordAttack()
+        {
+            if (Phase == GamePhase.Playing)
+            {
+                gameAudio?.PlaySwordAttack();
+            }
+        }
+
+        public void NotifyShieldDefense()
+        {
+            if (Phase == GamePhase.Playing)
+            {
+                gameAudio?.PlayShieldDefense();
+            }
+        }
+
         public void TryCompleteMission()
         {
             if (Phase != GamePhase.Playing)
@@ -233,6 +255,7 @@ namespace MedievalJourney
 
         private void OnPlayerDied(HealthSystem _)
         {
+            gameAudio?.PlayDeathBell();
             StartCoroutine(ShowDefeatAfterDelay());
         }
 
@@ -255,6 +278,7 @@ namespace MedievalJourney
         {
             Phase = phase;
             Time.timeScale = phase == GamePhase.Playing ? 1f : 0f;
+            gameAudio?.HandlePhase(phase);
             gameUI?.ShowPhase(phase);
         }
 

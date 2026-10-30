@@ -51,6 +51,7 @@ namespace MedievalJourney
                 return false;
             }
 
+            GameManager.Instance?.NotifySwordAttack();
             StartCoroutine(AttackRoutine());
             return true;
         }

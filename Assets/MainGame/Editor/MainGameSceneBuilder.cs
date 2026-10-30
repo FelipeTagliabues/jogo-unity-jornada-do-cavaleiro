@@ -41,6 +41,16 @@ namespace MedievalJourneyEditor
             "Assets/Fantasy Wooden GUI  Free/normal_ui_set A/TextBTN_Big.png";
         private const string ButtonPressedSpritePath =
             "Assets/Fantasy Wooden GUI  Free/normal_ui_set A/TextBTN_Big_Pressed.png";
+        private const string MenuMusicPath =
+            "Assets/EfeitosSonoros/MusicaDeFundoMenu.mp3";
+        private const string GameplayMusicPath =
+            "Assets/EfeitosSonoros/MusicaDeFundoDoJogoRodando.mp3";
+        private const string SwordAttackPath =
+            "Assets/EfeitosSonoros/AtaqueEspada.wav";
+        private const string ShieldDefensePath =
+            "Assets/EfeitosSonoros/escudo.mp3";
+        private const string DeathBellPath =
+            "Assets/EfeitosSonoros/SinoAoMorrer.mp3";
 
         private static readonly Color Gold = new(1f, 0.88f, 0.48f, 1f);
         private static readonly Color Ink = new(0.19f, 0.09f, 0.045f, 1f);
@@ -93,12 +103,14 @@ namespace MedievalJourneyEditor
                 .Any(root => root.GetComponentInChildren<PlayerDefense2D>(true) != null);
             bool hasIntroduction = scene.GetRootGameObjects()
                 .Any(root => root.GetComponentInChildren<OpeningSequenceUI>(true) != null);
+            bool hasAudio = scene.GetRootGameObjects()
+                .Any(root => root.GetComponentInChildren<GameAudio>(true) != null);
             if (openedForCheck)
             {
                 EditorSceneManager.CloseScene(scene, true);
             }
 
-            return !hasDefense || !hasIntroduction;
+            return !hasDefense || !hasIntroduction || !hasAudio;
         }
 
         private static void ContinueAfterPlayMode(PlayModeStateChange state)
@@ -199,8 +211,21 @@ namespace MedievalJourneyEditor
             GameObject managerObject = new("GameManager");
             SceneManager.MoveGameObjectToScene(managerObject, scene);
             GameManager gameManager = managerObject.AddComponent<GameManager>();
+            AudioSource musicSource = managerObject.AddComponent<AudioSource>();
+            musicSource.playOnAwake = false;
+            musicSource.loop = true;
+            AudioSource effectsSource = managerObject.AddComponent<AudioSource>();
+            effectsSource.playOnAwake = false;
+            effectsSource.loop = false;
+            GameAudio gameAudio = managerObject.AddComponent<GameAudio>();
+            gameAudio.Configure(musicSource, effectsSource,
+                AssetDatabase.LoadAssetAtPath<AudioClip>(MenuMusicPath),
+                AssetDatabase.LoadAssetAtPath<AudioClip>(GameplayMusicPath),
+                AssetDatabase.LoadAssetAtPath<AudioClip>(SwordAttackPath),
+                AssetDatabase.LoadAssetAtPath<AudioClip>(ShieldDefensePath),
+                AssetDatabase.LoadAssetAtPath<AudioClip>(DeathBellPath));
             GameUI gameUI = CreateInterface(scene, gameManager);
-            gameManager.Configure(player.GetComponent<HealthSystem>(), gameUI, enemies.Count);
+            gameManager.Configure(player.GetComponent<HealthSystem>(), gameUI, gameAudio, enemies.Count);
 
             CreateEventSystem(scene);
             if (!EditorSceneManager.SaveScene(scene, ScenePath))
@@ -232,7 +257,12 @@ namespace MedievalJourneyEditor
                 $"{CainosPrefabDirectory}/PF Village Props - White Bottle.prefab",
                 BoardSpritePath,
                 ButtonSpritePath,
-                ButtonPressedSpritePath
+                ButtonPressedSpritePath,
+                MenuMusicPath,
+                GameplayMusicPath,
+                SwordAttackPath,
+                ShieldDefensePath,
+                DeathBellPath
             };
 
             foreach (string path in required)

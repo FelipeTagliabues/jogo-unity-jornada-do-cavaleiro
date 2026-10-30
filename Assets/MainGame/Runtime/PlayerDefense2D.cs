@@ -42,6 +42,11 @@ namespace MedievalJourney
             }
 
             IsBlocking = shouldBlock;
+            if (IsBlocking)
+            {
+                GameManager.Instance?.NotifyShieldDefense();
+            }
+
             if (animator != null)
             {
                 animator.SetBool(IdleBlockHash, IsBlocking);

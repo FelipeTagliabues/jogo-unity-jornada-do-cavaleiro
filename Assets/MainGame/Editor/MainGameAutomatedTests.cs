@@ -212,6 +212,12 @@ namespace MedievalJourneyEditor
                 {
                     Require(manager.Phase == GamePhase.MainMenu, "o jogo nao iniciou no menu principal.");
                     Require(Mathf.Approximately(Time.timeScale, 0f), "o menu nao pausou a simulacao inicial.");
+                    GameAudio audio = UnityEngine.Object.FindAnyObjectByType<GameAudio>();
+                    Require(audio != null, "o sistema central de audio nao foi encontrado.");
+                    Require(audio.CurrentMusic == audio.MenuMusic && audio.MusicSource.isPlaying &&
+                            audio.MusicSource.loop &&
+                            !audio.EffectsSource.loop,
+                        "a musica do menu ou a configuracao de loop nao iniciou corretamente.");
                     manager.StartGame();
                     Require(manager.Phase == GamePhase.Introduction,
                         "StartGame nao abriu a introducao narrativa.");
@@ -220,6 +226,8 @@ namespace MedievalJourneyEditor
                     Require(manager.Score == 0 && manager.EnemiesDefeated == 0 &&
                             Mathf.Approximately(manager.ElapsedTime, 0f),
                         "os sistemas da partida avancaram durante a introducao.");
+                    Require(audio.CurrentMusic == null && !audio.MusicSource.isPlaying,
+                        "a musica do menu continuou durante a introducao.");
                     OpeningSequenceUI introduction = UnityEngine.Object.FindAnyObjectByType<OpeningSequenceUI>();
                     Require(introduction != null && introduction.gameObject.activeInHierarchy &&
                             introduction.PageCount == 4,
@@ -236,6 +244,10 @@ namespace MedievalJourneyEditor
                         "pular a introducao nao iniciou a partida.");
                     Require(Mathf.Approximately(Time.timeScale, 1f),
                         "o gameplay permaneceu congelado apos a introducao.");
+                    GameAudio audio = UnityEngine.Object.FindAnyObjectByType<GameAudio>();
+                    Require(audio != null && audio.CurrentMusic == audio.GameplayMusic &&
+                            audio.MusicSource.isPlaying,
+                        "a musica do gameplay nao iniciou apos a introducao.");
                     GameObject introductionPanel = GameObject.Find("Introducao Narrativa");
                     Require(introductionPanel == null || !introductionPanel.activeInHierarchy,
                         "a introducao permaneceu sobre o gameplay.");
@@ -271,7 +283,12 @@ namespace MedievalJourneyEditor
                     Require(manager.Phase == GamePhase.Playing && Mathf.Approximately(Time.timeScale, 1f),
                         "o sistema de continuar falhou.");
 
+                    GameAudio audio = UnityEngine.Object.FindAnyObjectByType<GameAudio>();
+                    Require(audio != null, "o sistema de audio desapareceu durante a partida.");
                     playerHealth.Kill();
+                    playerHealth.Kill();
+                    Require(audio.DeathBellPlayCount == 1 && audio.EffectsSource.isPlaying,
+                        "o sino de morte nao tocou exatamente uma vez para a mesma morte.");
                     stage = 3;
                     stageStartedAt = EditorApplication.timeSinceStartup;
                     return;
@@ -320,7 +337,13 @@ namespace MedievalJourneyEditor
                         "o item nao recuperou vida ate o limite maximo ou permitiu coleta repetida.");
                     PlayerDefense2D defense = player.GetComponent<PlayerDefense2D>();
                     Require(defense != null, "o sistema de escudo nao foi encontrado.");
+                    GameAudio audio = UnityEngine.Object.FindAnyObjectByType<GameAudio>();
+                    Require(audio != null, "o sistema de audio nao foi recriado no reinicio.");
+                    int shieldSounds = audio.ShieldDefensePlayCount;
                     defense.SetBlocking(true);
+                    defense.SetBlocking(true);
+                    Require(audio.ShieldDefensePlayCount == shieldSounds + 1,
+                        "o som do escudo nao tocou uma unica vez ao iniciar a defesa.");
                     Require(defense.TryBlockAttack(player.transform.position + Vector3.right),
                         "o escudo nao bloqueou um ataque frontal.");
                     Require(!defense.TryBlockAttack(player.transform.position + Vector3.left),
@@ -332,7 +355,10 @@ namespace MedievalJourneyEditor
                     enemy.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
                     smokeEnemyHealth = enemy.GetComponent<HealthSystem>();
                     Require(smokeEnemyHealth.CurrentHealth == 2, "a vida inicial do bandido nao e 2.");
+                    int swordSounds = audio.SwordAttackPlayCount;
                     Require(player.GetComponent<PlayerCombat2D>().TryAttack(), "o ataque do jogador nao iniciou.");
+                    Require(audio.SwordAttackPlayCount == swordSounds + 1,
+                        "o som da espada nao acompanhou o ataque valido.");
                     stage = 5;
                     stageStartedAt = EditorApplication.timeSinceStartup;
                     return;
@@ -380,7 +406,7 @@ namespace MedievalJourneyEditor
                     Require(victoryPanel != null && victoryPanel.activeInHierarchy,
                         "a tela de vitoria nao foi exibida.");
                     SessionState.SetString(ResultKey,
-                        "APROVADO: menu, introducao, pulo da abertura, gameplay, fisica, camera, cura, escudo, pausa, derrota, reinicio direto, combate, pontuacao, chefe e vitoria funcionaram em Play Mode.");
+                        "APROVADO: menu, introducao, audio de menu/gameplay, espada, escudo, sino de morte, pulo da abertura, fisica, camera, cura, pausa, derrota, reinicio direto, combate, pontuacao, chefe e vitoria funcionaram em Play Mode.");
                     EditorApplication.update -= RunSmokeStage;
                     EditorApplication.ExitPlaymode();
                 }

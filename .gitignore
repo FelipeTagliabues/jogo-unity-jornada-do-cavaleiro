@@ -34,3 +34,8 @@ Thumbs.db
 /Assets/Fantasy Wooden GUI  Free.meta
 /Assets/Hero Knight - Pixel Art/
 /Assets/Hero Knight - Pixel Art.meta
+
+# Third-party audio source files
+# Keep their Unity .meta files versioned so downloaded replacements retain scene GUIDs.
+/Assets/EfeitosSonoros/*.mp3
+/Assets/EfeitosSonoros/*.wav
